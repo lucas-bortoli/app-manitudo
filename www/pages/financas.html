@@ -1,0 +1,53 @@
+<div
+  class="pagina pagina-financas habilitar-swipe"
+  v-bind:class="{ atual: pagina === 4 }"
+  x-pagina-id="4"
+  v-if="pagina === 4">
+  <h1 class="page-title">Finanças</h1>
+
+  <p class="page-description">
+    Essa página tem como função, ter controle de gastos, para saber o quanto gastou, os lucros e despesas
+  </p>
+
+  <div class="table-with-actions">
+    <div class="actions">
+      <span class="table-title">Finanças</span>
+      <span class="spacing"></span>
+      <button
+        class="icon icon-only add-finances"
+        style="float: right"
+        @click="abrirModal('confirmacao-reset')"></button>
+    </div>
+    <table class="dados">
+      <tr>
+        <th>Ganhos</th>
+        <th>Despesas</th>
+        <th>Saldo</th>
+      </tr>
+      <tr>
+        <td>R$ 0.00</td>
+        <td>R$ 0.00</td>
+        <td>R$ 0.00</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- JANELA DE CONFIRMACAO DE RESET (Financas) -->
+<div class="modal micromodal-slide" id="confirmacao-reset">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" role="dialog">
+      <header class="modal__header">
+        <h2 class="modal__title">Atenção!</h2>
+        <a class="modal-close-x" @click="fecharModal('confirmacao-reset')"></a>
+      </header>
+      <main class="modal__content">
+        <p>Titulo</p>
+      </main>
+      0
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary">Sim</button>
+      </footer>
+    </div>
+  </div>
+</div>

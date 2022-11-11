@@ -1,0 +1,145 @@
+<div
+  class="pagina pagina-cliente habilitar-swipe"
+  v-bind:class="{ atual: pagina === 2 }"
+  x-pagina-id="2"
+  v-if="pagina === 2">
+  <h1 class="page-title">Cliente</h1>
+  <p class="page-description">
+    Essa página tem o objetivo de cadastrar, alterar ou excluir suas clientes, também com o intuito de facilitar a
+    gestão de seu negócio.
+  </p>
+
+  <div class="table-with-actions">
+    <div class="actions">
+      <span class="table-title">Meus clientes</span>
+      <span class="spacing"></span>
+      <button class="icon icon-only add-user" @click="abrirModal('modal-cliente')"></button>
+    </div>
+
+    <div class="list" @click="ev => tabelaClienteClicada(ev.target)">
+      <div class="list-item" v-for="(cli, index) in clienteTabela" v-bind:x-cli-id="index">
+        <p class="name">{{ cli.nome }}</p>
+        <p class="details">
+          <span>{{ formatarTelefoneTexto(cli.celular) }}</span>
+        </p>
+      </div>
+    </div>
+
+    <!--<table class="dados">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+        </tr>
+      </thead>
+      <tbody @click="ev => tabelaClienteClicada(ev.target)">
+        <tr v-for="(cli, index) in clienteTabela" v-bind:x-cli-id="index">
+          <td>{{ cli.nome }}</td>
+          <td>{{ formatarTelefoneTexto(cli.celular) }}</td>
+        </tr>
+      </tbody>
+    </table>-->
+
+    <!-- Texto mostrado se não há nada na tabela. -->
+    <p class="tablePlaceholderText" v-if="clienteTabela.length === 0">
+      Não há clientes cadastrados. Você pode cadastrar um usando o botão acima.
+    </p>
+  </div>
+</div>
+
+<!-- MODAL DE CADASTRO DE CLIENTES -->
+<div class="modal micromodal-slide" id="modal-cliente">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">Adicionar um cliente</h2>
+        <a class="modal-close-x" id="clienteFecharModal" @click="fecharModal('modal-cliente')"></a>
+      </header>
+      <main class="modal__content" id="modal-1-content">
+        <div class="field-row">
+          <input class="input" name="nomeCliente" placeholder=" " type="text" v-model="clienteModal.nome" />
+          <label class="label" for="nomeCliente">Nome</label>
+        </div>
+        <div class="field-row">
+          <input
+            class="input"
+            name="celularCliente"
+            placeholder=" "
+            type="text"
+            v-model="clienteModal.celular"
+            @keypress="ev => formatarTelefone(ev, 'clienteModal', 'celular')"
+            @focus="ev => formatarTelefone(ev, 'clienteModal', 'celular')"
+            @blur="ev => formatarTelefone(ev, 'clienteModal', 'celular')" />
+          <label class="label" for="celularCliente">Celular</label>
+        </div>
+      </main>
+      <footer class="modal__footer">
+        <button @click="salvarCliente()">Salvar</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de cliente selecionado -->
+<div class="modal micromodal-slide info_cliente" id="info_cliente">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title">Detalhes do cliente</h2>
+        <a class="modal-close-x" onclick="MicroModal.close('info_cliente')"></a>
+      </header>
+
+      <main class="modal__content">
+        <div class="field-row">
+          <label>Cliente:</label>
+          <p class="info-selected">{{ clienteSelecionado?.nome }}</p>
+        </div>
+
+        <div class="field-row">
+          <label>Telefone:</label>
+          <p class="info-selected">{{ formatarTelefoneTexto(clienteSelecionado?.celular || "") }}</p>
+        </div>
+      </main>
+
+      <footer class="modal__footer">
+        <button class="icon icon-only delete" v-if="pagina === 2" @click="clienteBotaoDelete()"></button>
+        <button class="icon icon-only edit" v-if="pagina === 2" @click="abrirModalEditarCliente()"></button>
+        <span class="espacamento"></span>
+        <button class="icon whatsapp" @click="abrirWhatsApp(clienteSelecionado.celular)">Falar</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de editar cliente -->
+<div class="modal micromodal-slide" id="modal-edit-cliente">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title">Editar cliente</h2>
+        <a class="modal-close-x" @click="fecharModal('modal-edit-cliente')"></a>
+      </header>
+      <main class="modal__content">
+        <div class="field-row">
+          <input class="input" name="nomeCliente" placeholder=" " type="text" v-model="clienteModal.nome" />
+          <label class="label" for="nomeCliente">Nome</label>
+        </div>
+        <div class="field-row">
+          <input
+            class="input"
+            name="celularCliente"
+            placeholder=" "
+            type="text"
+            v-model="clienteModal.celular"
+            @keypress="ev => formatarTelefone(ev, 'clienteModal', 'celular')"
+            @focus="ev => formatarTelefone(ev, 'clienteModal', 'celular')"
+            @blur="ev => formatarTelefone(ev, 'clienteModal', 'celular')" />
+          <label class="label" for="celularCliente">Celular</label>
+        </div>
+      </main>
+      <footer class="modal__footer">
+        <button @click="salvarEditarCliente()">Salvar</button>
+      </footer>
+    </div>
+  </div>
+</div>

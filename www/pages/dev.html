@@ -1,0 +1,18 @@
+<div class="pagina pagina-dev habilitar-swipe" v-bind:class="{ atual: pagina === 99 }" v-if="pagina === 99">
+  <h1 class="page-title">Desenvolvimento</h1>
+
+  <button onclick="alert('limpando banco...'); localStorage.clear(); location.reload();">Limpar banco de dados</button>
+  <br /><br />
+  <button onclick="devInserirDados()">Preencher banco</button> <br /><br />
+  <button onclick="baixarBancoDados()">Baixar banco de dados como arquivo</button>
+
+  <br />
+
+  <br /><br /><br /><br /><br />
+
+  <p>
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  </p>
+
+  <br /><br />
+</div>

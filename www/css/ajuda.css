@@ -1,0 +1,45 @@
+.pagina-ajuda {
+  background-color: white;
+}
+
+.accordion {
+  padding: 0.75em;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  margin-bottom: 0.75em;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.14);
+}
+
+.accordion .header {
+  padding: 0.75em 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.accordion .header::after {
+  display: inline-block;
+  content: " ";
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  background-image: url("/img/icons/ExpandRight.svg");
+  background-size: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform linear 100ms;
+}
+
+.accordion.open .header::after {
+  transform: rotate(90deg);
+}
+
+.accordion .body {
+  border-top: 1px solid #ddd;
+  padding-top: 0.75em;
+  text-align: justify;
+  display: none;
+}
+
+.accordion.open .body {
+  display: block;
+}

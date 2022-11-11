@@ -1,0 +1,158 @@
+<div
+  class="pagina pagina-manicure habilitar-swipe"
+  v-bind:class="{ atual: pagina === 3 }"
+  x-pagina-id="3"
+  v-if="pagina === 3">
+  <h1 class="page-title">Manicure</h1>
+  <p class="page-description">
+    Essa página tem o objetivo de cadastrar, alterar ou excluir as manicures, também com o intuito de facilitar a gestão
+    de seu negócio.
+  </p>
+
+  <div class="table-with-actions">
+    <div class="actions">
+      <span class="table-title">Manicures</span>
+      <span class="spacing"></span>
+      <button class="icon icon-only add-user" style="float: right" @click="abrirModal('modal-manicure')"></button>
+    </div>
+
+    <div class="list" @click="ev => tabelaManicureClicada(ev.target)">
+      <div class="list-item" v-for="(manicure, index) in manicureTabela" v-bind:x-mani-id="index">
+        <p class="name">{{ manicure.nome }}</p>
+        <p class="details">
+          <span>{{ formatarTelefoneTexto(manicure.celular) }}</span>
+        </p>
+      </div>
+    </div>
+
+    <!--
+    <table class="dados">
+      <tr>
+        <th>Nome</th>
+        <th>Telefone</th>
+      </tr>
+      <tbody @click="ev => tabelaManicureClicada(ev.target)">
+        <tr v-for="(manicure, index) in manicureTabela" v-bind:x-mani-id="index">
+          <td>{{ manicure.nome }}</td>
+          <td>{{ formatarTelefoneTexto(manicure.celular) }}</td>
+        </tr>
+      </tbody>
+    </table>-->
+
+    <!-- Texto mostrado se não há nada na tabela. -->
+    <p class="tablePlaceholderText" v-if="manicureTabela.length === 0">
+      Não há manicures cadastradas. Você pode cadastrá-las usando o botão acima.
+    </p>
+  </div>
+</div>
+
+<!--MODAL DE MANICURE-->
+<div class="modal micromodal-slide" id="modal-manicure">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" role="dialog">
+      <header class="modal__header">
+        <h2 class="modal__title" id="modal-1-title">Cadastrar nova manicure</h2>
+        <a class="modal-close-x" id="manicureFecharModal" @click="fecharModal('modal-manicure')"></a>
+      </header>
+      <main class="modal__content" id="modal-1-content">
+        <div class="field-row">
+          <input
+            class="input"
+            name="nomeManicure"
+            placeholder=" "
+            id="nomeManicure"
+            type="text"
+            v-model="manicureModal.nome" />
+          <label class="label" for="nomeManicure">Nome</label>
+        </div>
+        <div class="field-row">
+          <input
+            class="input"
+            name="celularManicure"
+            placeholder=" "
+            id="celManicure"
+            type="text"
+            v-model="manicureModal.celular"
+            @keypress="ev => formatarTelefone(ev, 'manicureModal', 'celular')"
+            @focus="ev => formatarTelefone(ev, 'manicureModal', 'celular')"
+            @blur="ev => formatarTelefone(ev, 'manicureModal', 'celular')" />
+          <label class="label" for="celularManicure">Celular</label>
+        </div>
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary" @click="salvarManicure()">Salvar</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de manicure selecionado -->
+<div class="modal micromodal-slide info_manicure" id="info_manicure">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title">Detalhes da Manicure</h2>
+        <a class="modal-close-x" @click="fecharModal('info_manicure')"></a>
+      </header>
+
+      <main class="modal__content">
+        <div class="field-row">
+          <label>Manicure:</label>
+          <p class="info-selected">{{ manicureSelecionado?.nome }}</p>
+        </div>
+
+        <div class="field-row">
+          <label>Telefone:</label>
+          <p class="info-selected">{{ formatarTelefoneTexto(manicureSelecionado?.celular || "") }}</p>
+        </div>
+      </main>
+
+      <footer class="modal__footer">
+        <button class="icon icon-only delete" v-if="pagina === 3" @click="manicureBotaoDelete()"></button>
+        <button class="icon icon-only edit" v-if="pagina === 3" @click="abrirModalEditarManicure()"></button>
+        <span class="espacamento"></span>
+        <button class="icon whatsapp" @click="abrirWhatsApp(manicureSelecionado.celular)">Falar</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- Editar manicure -->
+<div class="modal micromodal-slide" id="modal-edit-manicure">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container" role="dialog">
+      <header class="modal__header">
+        <h2 class="modal__title">Editar manicure</h2>
+        <a class="modal-close-x" @click="fecharModal('modal-edit-manicure')"></a>
+      </header>
+      <main class="modal__content">
+        <div class="field-row">
+          <input
+            class="input"
+            name="nomeManicure"
+            placeholder=" "
+            id="nomeManicure"
+            type="text"
+            v-model="manicureModal.nome" />
+          <label class="label" for="nomeManicure">Nome</label>
+        </div>
+        <div class="field-row">
+          <input
+            class="input"
+            name="celularManicure"
+            placeholder=" "
+            id="celManicure"
+            type="text"
+            v-model="manicureModal.celular"
+            @keypress="ev => formatarTelefone(ev, 'manicureModal', 'celular')"
+            @focus="ev => formatarTelefone(ev, 'manicureModal', 'celular')"
+            @blur="ev => formatarTelefone(ev, 'manicureModal', 'celular')" />
+          <label class="label" for="celularManicure">Celular</label>
+        </div>
+      </main>
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary" @click="salvarEditarManicure()">Salvar</button>
+      </footer>
+    </div>
+  </div>
+</div>

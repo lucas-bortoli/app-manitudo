@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="/css/ajuda.css" />
+
+<div
+  class="pagina pagina-ajuda habilitar-swipe"
+  v-bind:class="{ atual: pagina === 15 }"
+  x-pagina-id="15"
+  v-if="pagina === 15">
+  <h1 class="page-title">Ajuda</h1>
+  <p class="page-description">Clique em um item para mostrar detalhes.</p>
+
+  <div class="accordion">
+    <div class="header" @click="ev => ajudaToggleAccordion(ev.target)">Sobre</div>
+    <div class="body">
+      ManiTudo é um aplicativo que foi desenvolvido com intuito de facilitar com o trabalho de manicures, com
+      integrações para pagamento e comunicação com suas clientes ou manicures.
+    </div>
+  </div>
+
+  <div class="accordion">
+    <div class="header" @click="ev => ajudaToggleAccordion(ev.target)">Problemas na interface do app</div>
+    <div class="body">Por favor, verifique se o WebView está instalado ou em sua versão mais recente na Play Store.</div>
+  </div>
+
+  <div class="accordion">
+    <div class="header" @click="ev => ajudaToggleAccordion(ev.target)">Contato</div>
+    <div class="body">
+      Em caso de problemas, entre em contato com os desenvolvedores do app.
+      <br /><br />
+      gustavovitoreli@gmail.com <br />
+      <br /><br />
+      <p style="text-align: right; margin: 0">
+        <button @click="abrirJanelaTemp('mailto:gustavovitoreli@gmail.com')">Enviar e-mail</button>
+      </p>
+    </div>
+  </div>
+  <br><br>
+  <p style="font-size: 0.8rem; margin-left: 0.2rem; text-align: right">
+    {{ VERSAO_APP }}<br />
+    {{ COPYRIGHT }}<br />
+    Todos os direitos reservados
+  </p>
+</div>

@@ -1,0 +1,8 @@
+{
+    "liveServer.settings.multiRootWorkspaceName": "TCC",
+    "prettier.bracketSameLine": true,
+    "prettier.printWidth": 120,
+    "prettier.tabWidth": 2,
+    "prettier.useTabs": false,
+    "editor.fontFamily": "Comic Mono, Consolas, 'Courier New', monospace"
+}

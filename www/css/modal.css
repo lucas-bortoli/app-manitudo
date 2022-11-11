@@ -1,0 +1,215 @@
+/**************************\
+  Basic Modal Styles
+\**************************/
+
+.modal {
+}
+
+.modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal__container {
+  background-color: #fff;
+  max-width: 500px;
+  width: 100vw;
+  max-height: calc(100vh - 2rem);
+  border-radius: 12px;
+  overflow: hidden;
+  box-sizing: border-box;
+  filter: blur(0);
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.09), 0 6px 6px rgba(0, 0, 0, 0.23);
+  position: relative;
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+  padding-bottom: 0;
+}
+
+.modal__title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 400;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  box-sizing: border-box;
+}
+
+.modal__header .icon::before {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+  display: inline-block;
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  content: " ";
+  vertical-align: middle;
+  margin-top: -4px;
+}
+
+.modal__close {
+  background: transparent;
+  border: 0;
+  display: none;
+}
+
+.modal__header .modal__close:before {
+  content: "\2715";
+}
+
+.modal__content {
+  line-height: 1.5;
+  flex-grow: 1;
+  overflow-y: scroll;
+  padding: 30px;
+}
+
+/* Ícone de "background", grande */
+.modal__container .dialog-icon {
+  position: absolute;
+  bottom: -20px;
+  right: -100px;
+  width: 300px;
+  height: 300px;
+  display: inline-block;
+  background-position: center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  opacity: 0.06;
+}
+
+.modal__content .dialog-icon.error {
+  background-image: url("/img/icons/StatusError.svg");
+}
+.modal__content .dialog-icon.info {
+  background-image: url("/img/icons/StatusInformation.svg");
+}
+.modal__content .dialog-icon.warn {
+  background-image: url("/img/icons/StatusWarning.svg");
+}
+.modal__content .dialog-icon.success {
+  background-image: url("/img/icons/StatusOK.svg");
+}
+
+.modal__footer {
+  border-top: 1px solid #ddd;
+  padding: 15px 30px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  z-index: 1;
+}
+
+.modal__footer .espacamento {
+  flex-grow: 1;
+}
+
+.modal__footer button:not(:first-child) {
+  margin-left: 15px;
+}
+
+.modal-reset {
+  color: red;
+  text-decoration: underline;
+  justify-content: center;
+}
+
+.modal-close-x {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  background-image: url("/img/icons/Close.svg");
+  background-size: 1rem;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/**************************\
+    Demo Animation Style
+  \**************************/
+@keyframes mmfadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mmfadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes mmslideIn {
+  from {
+    transform: translateY(-2%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mmslideOut {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-2%);
+  }
+}
+
+.micromodal-slide {
+  display: none;
+}
+
+.micromodal-slide.is-open {
+  display: block;
+}
+
+.micromodal-slide[aria-hidden="false"] .modal__overlay {
+  animation: mmfadeIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.micromodal-slide[aria-hidden="false"] .modal__container {
+  animation: mmslideIn 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.micromodal-slide[aria-hidden="true"] .modal__overlay {
+  animation: mmfadeOut 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.micromodal-slide[aria-hidden="true"] .modal__container {
+  animation: mmslideOut 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.micromodal-slide .modal__container,
+.micromodal-slide .modal__overlay {
+  will-change: transform;
+}

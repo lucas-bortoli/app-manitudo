@@ -1,0 +1,86 @@
+.agendamento-modal .unit-input {
+  position: relative;
+}
+
+.agendamento-modal .unit-input .unit {
+  position: absolute;
+  top: 50%;
+  left: 1ch;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.agendamento-modal .unit-input input {
+  flex-grow: 1;
+  font-size: inherit;
+  padding-left: 4ch;
+}
+
+.agendamento-modal .datetimepicker {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.pix-modal .modal__overlay {
+  background-color: white;
+}
+
+.pix-modal .modal__container {
+  box-shadow: none;
+}
+
+.pix-modal .qr-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pix-modal canvas {
+  width: 75%;
+  image-rendering: pixelated;
+  padding: 1.5em;
+  border: 1px solid #ccc;
+  box-sizing: content-box;
+  border-radius: 12px;
+}
+
+.pix-modal .valor {
+  font-size: 24px;
+  font-weight: 100;
+  margin-top: 0.5em;
+}
+
+.modal__header .icon.pix::before {
+  background-image: url("/img/icons/pix32.png");
+}
+
+.info-selected {
+  margin-top: 0px;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkbox {
+  background-image: url("/img/icons/CheckBoxUnchecked.svg");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 2em;
+  height: 2em;
+  display: inline-block;
+  margin-right: 0.5em;
+  transition: background-image 0.13000000001s ease-in-out;
+}
+
+.checkbox.ativo {
+  background-image: url("/img/icons/CheckBoxChecked.svg");
+}
+
+.info_agendamento .field-row label {
+  font-size: 0.8rem;
+}

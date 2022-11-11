@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="theme-color" content="#d17594" />
+
+    <title>ManiTudo</title>
+
+    <link rel="stylesheet" href="lib/notify.css" />
+    <link rel="stylesheet" href="https://unpkg.com/@vuepic/vue-datepicker@latest/dist/main.css" />
+
+    <link rel="stylesheet" href="css/modal.css" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body spellcheck="false" autocomplete="off">
+    <div id="app">
+      <header id="header" class="habilitar-swipe">
+        <img class="logo" src="/img/manicure.png" alt="" />
+        <nav id="nav" v-bind:class="{ active: navbarAberto }">
+          <button id="btn-mobile" @click="navbarAberto = !navbarAberto">
+            <span id="hamburger"></span>
+          </button>
+          <div class="menu-overlay" @click="navbarAberto = false">
+            <ul id="menu" role="menu" class="habilitar-swipe">
+              <li>
+                <a href="#" @click="mudarPagina(1)" v-bind:class="{ atual: pagina === 1 }"
+                  ><i class="icon agendamentos"></i>Agendamentos</a
+                >
+              </li>
+              <li>
+                <a href="#" @click="mudarPagina(2)" v-bind:class="{ atual: pagina === 2 }"
+                  ><i class="icon clients"></i>Cliente</a
+                >
+              </li>
+              <li>
+                <a href="#" @click="mudarPagina(3)" v-bind:class="{ atual: pagina === 3 }"
+                  ><i class="icon manicure"></i>Manicure</a
+                >
+              </li>
+              <!--<li>
+                <a href="#" @click="mudarPagina(4)" v-bind:class="{ atual: pagina === 4 }"
+                  ><i class="icon money"></i>Finanças</a
+                >
+              </li>-->
+              <li class="help">
+                <a href="#" @click="mudarPagina(15)" v-bind:class="{ atual: pagina === 15 }"
+                  ><i class="icon help"></i>Ajuda</a
+                >
+              </li>
+              <li>
+                <a href="#" @click="mudarPagina(10)" v-bind:class="{ atual: pagina === 10 }"
+                  ><i class="icon settings"></i>Configurações</a
+                >
+              </li>
+
+              <!--<li class="dev" style="text-align: center; margin-top: 3rem">
+                <button @click="mudarPagina(99)" v-bind:class="{ atual: pagina == 99 }">
+                  Ferramentas do desenvolvedor
+                </button>
+              </li>-->
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Páginas -->
+      <x-html-include src="pages/agendamento.html"></x-html-include>
+      <x-html-include src="pages/cliente.html"></x-html-include>
+      <x-html-include src="pages/manicure.html"></x-html-include>
+      <x-html-include src="pages/financas.html"></x-html-include>
+      <x-html-include src="pages/ajuda.html"></x-html-include>
+      <x-html-include src="pages/config.html"></x-html-include>
+
+      <!-- PÁGINA DE DESENVOLVEDOR!!! -->
+      <x-html-include src="pages/dev.html"></x-html-include>
+    </div>
+
+    <!-- Script para incluir paginas, deve ser o primeiro script!!! -->
+    <script src="js/htmlInclude.js"></script>
+
+    <!-- Arquivo dado pelo Cordova!!! Não existe na pasta do projeto -->
+    <!-- Biblioteca de integração com o Cordova -->
+    <script src="cordova.js"></script>
+
+    <!-- Bibliotecas de terceiros -->
+    <script src="lib/db/sql-wasm.js"></script>
+    <script src="lib/utf8-to-base64.min.js"></script>
+    <script src="lib/vue.global.js"></script>
+    <script src="lib/hammer.min.js"></script>
+    <script src="lib/micromodal.min.js"></script>
+    <script src="lib/day.min.js"></script>
+
+    <script src="lib/libqr.js"></script>
+    <script src="lib/pix.js"></script>
+
+    <!-- Scripts próprios -->
+    <script src="js/dialog.js"></script>
+    <script src="lib/notify.js"></script>
+    <script src="js/pequenasFuncoes.js"></script>
+    <script src="js/dao.js"></script>
+
+    <script src="js/interface/agendamento.js"></script>
+    <script src="js/interface/cliente.js"></script>
+    <script src="js/interface/manicure.js"></script>
+    <script src="js/interface/financas.js"></script>
+    <script src="js/interface/ajuda.js"></script>
+    <script src="js/interface/config.js"></script>
+    <script src="js/interface.js"></script>
+    <script src="js/paginaSwitch.js"></script>
+
+    <script src="js/dev.js"></script>
+  </body>
+</html>

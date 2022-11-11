@@ -1,0 +1,108 @@
+.notify-holder {
+  position: fixed;
+  display: flex;
+  flex-direction: column-reverse;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  z-index: 1100;
+  font-family: inherit;
+}
+
+.notify-msg {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 16px;
+  margin: 0 8px;
+  margin-bottom: 8px;
+  background-color: white;
+  border: 1px solid #aaa;
+  transform: translateX(100%);
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.notify-msg.show {
+  animation: slide-in 0.4s forwards;
+}
+
+.notify-msg.hide {
+  animation: slide-out 0.8s forwards;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(200%);
+  }
+
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+/*@keyframes slide-in {
+    0% { transform: translateY(100%); opacity: 0; }
+    100% { transform: translateY(0%); opacity: 1; }
+}
+
+@keyframes slide-out {
+    0% { transform: translateY(0%); opacity: 1; }
+    100% { transform: translateY(-100%); opacity: 0; }
+}*/
+
+.notify-msg .icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.notify-msg.info {
+}
+
+.notify-msg.warn {
+  background-color: #fff8e1;
+  border-color: #ffe0b2;
+}
+
+.notify-msg.error {
+  background-color: #ffebee;
+  border-color: #ffcdd2;
+}
+
+.notify-msg.success {
+  background-color: #e8f5e9;
+  border-color: #c8e6c9;
+}
+
+.notify-msg.info .icon {
+  background-image: url("../img/icons/InfoTipline.svg");
+}
+
+.notify-msg.warn .icon {
+  background-image: url("../img/icons/Warning.svg");
+}
+
+.notify-msg.error .icon {
+  background-image: url("../img/icons/Close.svg");
+}
+
+.notify-msg.success .icon {
+  background-image: url("../img/icons/Checkmark.svg");
+}
+
+.notify-msg.wait .icon {
+  background-image: url("/assets/icons/Time.svg");
+}

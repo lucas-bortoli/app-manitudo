@@ -1,0 +1,106 @@
+<link rel="stylesheet" href="/css/config.css" />
+
+<div
+  class="pagina pagina-config habilitar-swipe"
+  v-bind:class="{ atual: pagina === 10 }"
+  x-pagina-id="10"
+  v-if="pagina === 10">
+  <h1 class="page-title">Configurações</h1>
+
+  <div class="config">
+    <p class="config-category">Configuração do PIX</p>
+    <div
+      class="config-entry config-entry-toggle"
+      v-bind:class="{ active: paginaConfig.pixAtivo }"
+      @click="configInverterPixHabilitado()">
+      <p class="entry-title">Habilitar pagamento via Pix</p>
+    </div>
+    <div class="config-entry" :disabled="!paginaConfig.pixAtivo" @click="configAbrirModalPix">
+      <p class="entry-title">Minha chave Pix</p>
+      <p class="entry-description" v-if="!paginaConfig.pixAtivo">Habilite o Pix para configurá-lo.</p>
+      <p class="entry-description" v-if="paginaConfig.pixAtivo">{{ configCensurarChavePix(paginaConfig.pixChave) }}</p>
+      <p class="entry-description" v-if="paginaConfig.pixAtivo">{{ paginaConfig.pixNome }}</p>
+    </div>
+
+    <!--<p class="config-category">Interface de usuário</p>
+    <div class="config-entry">
+      <p class="entry-title">Idioma</p>
+      <p class="entry-description">Português brasileiro</p>
+    </div>
+    <div class="config-entry">
+      <p class="entry-title">Moeda usada</p>
+      <p class="entry-description">R$ - Reais</p>
+    </div>-->
+
+    <p class="config-category">Uso de dados</p>
+    <div class="config-entry">
+      <p class="entry-description">
+        Você usou {{ paginaConfig.uso }} MB do total de {{ paginaConfig.max }} MB de dados ({{ paginaConfig.porcentagem
+        }}%).
+      </p>
+      <div class="progress-bar" :style="{ '--progress': paginaConfig.porcentagemNum + '%' }">
+        <div class="progress-bar-track"></div>
+      </div>
+      <p class="entry-description">Esse limite é imposto pelo telefone, não sendo possível alterá-lo.</p>
+    </div>
+    <div class="config-entry" @click="botaoLimparDados();">
+      <p class="entry-title">Limpar dados</p>
+      <p class="entry-description">Limpa todos os dados do aplicativo. Isso não pode ser revertido.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de configuração do PIX -->
+<div class="modal micromodal-slide pix-config-modal" id="pix_config_modal">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title icon pix">Configuração do PIX</h2>
+        <a class="modal-close-x" @click="fecharModal('pix_config_modal')"></a>
+      </header>
+      <main class="modal__content">
+        <div class="field-row">
+          <label>Tipo de chave</label>
+          <select :value="paginaConfig.pixChaveTipo" @change="configModalPixLimparChave" id="fieldPixTipoChave">
+            <option value="cpf">CPF</option>
+            <option value="cnpj">CNPJ</option>
+            <option value="telefone">Telefone</option>
+            <option value="email">E-mail</option>
+            <option value="random">Chave aleatória</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <input
+            class="input"
+            placeholder=" "
+            type="text"
+            :value="paginaConfig.pixChave"
+            id="fieldPixChave"
+            name="chavePix"
+            v-on:change="configPixFormatarCampo" />
+          <label class="label" for="_">Chave PIX</label>
+        </div>
+
+        <div class="field-row">
+          <input
+            class="input"
+            name="pixOwner"
+            placeholder=" "
+            type="text"
+            :value="paginaConfig.pixNome"
+            id="fieldPixProprietario" />
+          <label class="label" for="pixOwner">Nome do proprietário da chave</label>
+        </div>
+
+        <p>
+          Todos os códigos Pix gerados pelo app usarão essa chave. Certifique-se que o nome dado é exatamente igual ao
+          mostrado pelo seu banco.
+        </p>
+      </main>
+      <footer class="modal__footer">
+        <button @click="configSalvarConfig()">Salvar</button>
+      </footer>
+    </div>
+  </div>
+</div>

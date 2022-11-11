@@ -1,0 +1,254 @@
+<link rel="stylesheet" href="/css/agendamento.css" />
+
+<div
+  class="pagina pagina-agendar habilitar-swipe"
+  v-bind:class="{ atual: pagina === 1 }"
+  x-pagina-id="1"
+  v-if="pagina === 1">
+  <h1 class="page-title">Agendamento</h1>
+  <p class="page-description">
+    Essa página tem como função, cadastrar, alterar ou excluir, trazendo facilidade na gestão de seus agendamentos.
+  </p>
+
+  <div class="table-with-actions">
+    <div class="actions">
+      <span class="table-title">Meus agendamentos</span>
+      <span class="spacing"></span>
+      <button
+        class="icon icon-only add-agd"
+        style="float: right"
+        @click="abrirModalAgendamentoCadastro('novo-agendamento-modal')"></button>
+    </div>
+
+    <div class="list" @click="ev => tabelaAgendamentoClicada(ev.target)">
+      <div
+        class="list-item"
+        v-for="(agd, index) in agendamentosTabela"
+        v-bind:x-agd-index="index"
+        v-bind:class="{ 'primeiroDoPassado': agd._primeiroDoPassado }">
+        <p class="name">{{ agd.clienteNome }}</p>
+        <p class="details">
+          <span class="date">{{ dataRelativa(agd.data + " " + agd.hora) }}</span>
+          <span class="price">{{ formatarDinheiroTexto(agd.valor) }}</span>
+        </p>
+      </div>
+    </div>
+
+    <!--
+    <table class="dados">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Data</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+
+      <tbody @click="ev => tabelaAgendamentoClicada(ev.target)">
+        <tr v-for="(agd, index) in agendamentosTabela" v-bind:x-agd-id="index" v-bind:class="{ 'primeiroDoPassado': agd._primeiroDoPassado }">
+          <td>{{ agd.clienteNome }}</td>
+          <td>{{ dataRelativa(agd.data + " " + agd.hora) }}</td>
+          <td style="text-align: right; min-width: 8ch">
+            <span style="float: left">R$</span>{{ (agd.valor || 0).toFixed(2) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    -->
+
+    <!-- Texto mostrado se não há nada na tabela. -->
+    <p class="tablePlaceholderText" v-if="agendamentosTabela.length === 0">
+      Não há agendamentos marcados. Você pode marcá-los usando o botão acima.
+    </p>
+  </div>
+</div>
+
+<!-- Modal de cadastro do agendamento -->
+<div class="modal micromodal-slide agendamento-modal" id="novo-agendamento-modal">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title">Novo agendamento</h2>
+        <a class="modal-close-x" @click="fecharModal('novo-agendamento-modal')"></a>
+      </header>
+
+      <main class="modal__content">
+        <div class="field-row">
+          <label>Cliente</label>
+          <select v-model="agendamentoModal.clienteId">
+            <option v-for="cliente of clienteTabela" :key="cliente.id" :value="cliente.id">{{cliente.nome}}</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label>Manicure</label>
+          <select v-model="agendamentoModal.manicureId">
+            <option v-for="manicure of manicureTabela" :key="manicure.id" :value="manicure.id">
+              {{manicure.nome}}
+            </option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label>Valor a ser cobrado</label>
+          <div class="unit-input">
+            <span class="unit">R$</span>
+            <input class="input" type="number" v-model="agendamentoModal.preco" min="0" step="0.01" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label>Data e hora do agendamento</label>
+          <div class="datetimepicker">
+            <input
+              class="input"
+              type="date"
+              v-model="agendamentoModal.data"
+              :min="new Date().toISOString().split('T')[0]"
+              style="width: 60%" />
+            <input class="input" v-model="agendamentoModal.hora" style="width: 40%" type="time" step="300" />
+          </div>
+        </div>
+      </main>
+
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary" @click="novoAgendamento()">Salvar</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de detalhes do agendamento selecionado -->
+<div class="modal micromodal-slide info_agendamento" id="info_agendamento">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title">Detalhes do agendamento</h2>
+        <a class="modal-close-x" onclick="MicroModal.close('info_agendamento')"></a>
+      </header>
+
+      <main class="modal__content">
+        <div class="field-row" @click="agendamentoModalAbrirCliente(agendamentoSelecionado.clienteId)">
+          <label>Cliente</label>
+          <p class="info-selected">
+            {{ agendamentoSelecionado?.clienteNome }}
+            <i class="icon icon-only go-to agd-arrow" style="float: right"></i>
+          </p>
+        </div>
+
+        <div class="field-row" @click="agendamentoModalAbrirManicure(agendamentoSelecionado.manicureId)">
+          <label>Manicure</label>
+          <p class="info-selected">
+            {{ agendamentoSelecionado?.manicureNome }}
+            <i class="icon icon-only go-to agd-arrow" style="float: right"></i>
+          </p>
+        </div>
+
+        <div class="field-row">
+          <label>Valor cobrado</label>
+          <p class="info-selected">{{ formatarDinheiroTexto(agendamentoSelecionado?.valor) }}</p>
+        </div>
+
+        <div class="field-row">
+          <label>Data e hora do agendamento</label>
+          <p class="info-selected">
+            {{ dataHumana(agendamentoSelecionado?.data + " " + agendamentoSelecionado?.hora) }}
+          </p>
+        </div>
+
+        <div class="checkbox-wrapper" @click="salvarPagamento();">
+          <i class="checkbox" v-bind:class="{ ativo: agendamentoSelecionado?.pago }"></i> Marcar como pago
+        </div>
+      </main>
+
+      <footer class="modal__footer">
+        <button class="icon icon-only delete" @click="agendamentoBotaoDelete()"></button>
+        <button class="icon icon-only edit" @click="agendamentoAbrirModalEdit()"></button>
+        <span class="espacamento"></span>
+        <button class="icon pix" @click="agendamentoGerarPagamentoPix()" v-bind:disabled="agendamentoSelecionado?.pago">
+          Pix
+        </button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de EDIÇÃO do agendamento -->
+<div class="modal micromodal-slide agendamento-modal edit-agendamento-modal" id="edit-agendamento-modal">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title">Editar agendamento</h2>
+        <a class="modal-close-x" @click="fecharModal('edit-agendamento-modal')"></a>
+      </header>
+
+      <main class="modal__content">
+        <div class="field-row">
+          <label>Cliente</label>
+          <select class="clienteSelect">
+            <option v-for="cliente of clienteTabela" :key="cliente.id" :value="cliente.id">{{cliente.nome}}</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label>Manicure</label>
+          <select class="manicureSelect">
+            <option v-for="manicure of manicureTabela" :key="manicure.id" :value="manicure.id">
+              {{manicure.nome}}
+            </option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label>Valor a ser cobrado</label>
+          <div class="unit-input">
+            <span class="unit">R$</span>
+            <input class="input valorInput" type="number" min="0" step="0.01" />
+          </div>
+        </div>
+
+        <div class="field-row">
+          <label>Data e hora do agendamento</label>
+          <div class="datetimepicker">
+            <input class="input" type="date" :min="new Date().toISOString().split('T')[0]" style="width: 60%" />
+            <input class="input" style="width: 40%" type="time" step="300" />
+          </div>
+        </div>
+      </main>
+
+      <footer class="modal__footer">
+        <button class="modal__btn modal__btn-primary" @click="agendamentoModalEditSalvar()">Salvar</button>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<div class="modal micromodal-slide pix-modal-loading" id="pix-modal-loading">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title icon pix">Aguarde...</h2>
+      </header>
+      <main class="modal__content">Gerando código Pix... Pode demorar alguns segundos.</main>
+    </div>
+  </div>
+</div>
+
+<!-- Modal do PIX em si -->
+<div class="modal micromodal-slide pix-modal" id="pix_agendamento">
+  <div class="modal__overlay" tabindex="-1">
+    <div class="modal__container">
+      <header class="modal__header">
+        <h2 class="modal__title icon pix">Pagamento por PIX</h2>
+        <a class="modal-close-x" onclick="MicroModal.close('pix_agendamento')"></a>
+      </header>
+      <main class="modal__content">
+        <!-- código QR do pix -->
+        <div class="qr-wrapper">
+          <canvas id="pix-qr-code" width="256" height="256"></canvas>
+          <span class="valor">{{ formatarDinheiroTexto(agendamentoSelecionado?.valor) }}</span>
+          <span style="text-align: center">para {{ paginaConfig?.pixNome }}</span>
+          <p style="text-align: center">Cliente, escaneie o código QR acima em seu app de banco preferido.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>
